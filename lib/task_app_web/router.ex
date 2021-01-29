@@ -1,6 +1,6 @@
 defmodule TaskAppWeb.Router do
   use TaskAppWeb, :router
-
+  use Pow.Phoenix.Router
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -12,9 +12,15 @@ defmodule TaskAppWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
   end
+  scope "/" do
+    pipe_through :browser
+
+    pow_routes()
+  end
 
   scope "/", TaskAppWeb do
     pipe_through :browser
+
 
     get "/", PageController, :index
   end
